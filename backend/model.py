@@ -1,9 +1,10 @@
 import base64
 
 class Model():
-    def __init__(self, file_name="", description=""):
+    def __init__(self, file_name="", description="", style=""):
         self.file_name = file_name
         self.description = description
+        self.style = style
 
     def generateImages(self):
         images = []

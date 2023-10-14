@@ -5,6 +5,7 @@ import Stages from "./components/Stages/Stages";
 import Upload from "./components/Upload/Upload";
 import Choice from "./components/Choice/Choice";
 import Result from "./components/Result/Result";
+import Loading from "./components/Loading/Loading";
 
 function App() {
     const [currentStage, setCurrentStage] = useState(1);
@@ -13,13 +14,26 @@ function App() {
 
     const startingStage = 1;
 
-    async function handleGenerateRequest(name, description) {
-        const response = await axios.post("api/generate", {
-            name,
-            description,
-        });
-        setGeneratedImages(response.data.images);
+    async function handleGenerateRequest(video_name, description, style, image_name) {
         setCurrentStage((old) => old + 1);
+        if (!image_name) {
+            image_name = "";
+        }
+        setTimeout(async () => {
+            try {
+                const response = await axios.post("api/generate", {
+                    video_name,
+                    description,
+                    style,
+                    image_name,
+                });
+                setGeneratedImages(response.data.images);
+                setCurrentStage((old) => old + 1);
+            } catch (e) {
+                console.log(e);
+                setCurrentStage((old) => old - 1);
+            }
+        }, 10000);
     }
 
     function handleImageChoice(chosenImageIndex) {
@@ -40,11 +54,14 @@ function App() {
             stageElement = <Upload continueHandler={handleGenerateRequest} />;
             break;
         case 2:
+            stageElement = <Loading />;
+            break;
+        case 3:
             stageElement = (
                 <Choice generatedImages={generatedImages} continueHandler={handleImageChoice} />
             );
             break;
-        case 3:
+        case 4:
             stageElement = (
                 <Result
                     selectedImage={generatedImages[selectedImageIndex]}

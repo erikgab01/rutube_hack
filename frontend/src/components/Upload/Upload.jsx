@@ -3,42 +3,72 @@ import { useRef, useState } from "react";
 import "./upload.css";
 
 export default function Upload({ continueHandler }) {
-    const [dragActive, setDragActive] = useState(false);
+    const [putUserFace, setPutUserFace] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [dragVideoActive, setDragVideoActive] = useState(false);
+    const [dragImageActive, setDragImageActive] = useState(false);
+    const [style, setStyle] = useState("Random Style");
     const [description, setDescription] = useState("");
-    const fileInput = useRef(null);
+    const videoInput = useRef(null);
+    const imageInput = useRef(null);
 
     // handle drag events
     function handleDrag(e) {
+        console.log(e.target.id);
         e.preventDefault();
         e.stopPropagation();
         if (e.type === "dragenter" || e.type === "dragover") {
-            setDragActive(true);
+            if (e.target.id === "dropcontainer-video") setDragVideoActive(true);
+            else {
+                setDragImageActive(true);
+            }
         } else if (e.type === "dragleave") {
-            setDragActive(false);
+            if (e.target.id === "dropcontainer-video") setDragVideoActive(false);
+            else {
+                setDragImageActive(false);
+            }
         }
     }
 
     function handleDrop(e) {
         e.preventDefault();
         e.stopPropagation();
-        setDragActive(false);
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            fileInput.current.files = e.dataTransfer.files;
+        if (e.target.id === "dropcontainer-video") {
+            setDragVideoActive(false);
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                videoInput.current.files = e.dataTransfer.files;
+            }
+        } else {
+            setDragImageActive(false);
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                imageInput.current.files = e.dataTransfer.files;
+            }
         }
-        console.log(e.dataTransfer.files[0]);
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append("file", fileInput.current.files[0]);
-        console.log(formData);
+        setIsLoading(true);
+        const formDataVideo = new FormData();
+        const formDataImage = new FormData();
+        formDataVideo.append("file", videoInput.current.files[0]);
         try {
-            const response = await axios.post("api/uploadVideo", formData, {
+            const response1 = await axios.post("api/uploadVideo", formDataVideo, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
-            console.log(response);
-            continueHandler(fileInput.current.files[0].name, description);
+            if (putUserFace) {
+                formDataImage.append("file", imageInput.current.files[0]);
+                const response2 = await axios.post("api/uploadImage", formDataImage, {
+                    headers: { "Content-Type": "multipart/form-data" },
+                });
+            }
+            setIsLoading(false);
+            continueHandler(
+                videoInput.current.files[0].name,
+                description,
+                style,
+                imageInput.current.files[0]?.name
+            );
         } catch (e) {
             console.log(e);
         }
@@ -49,31 +79,79 @@ export default function Upload({ continueHandler }) {
                 Генерируем обложку для видео. Загрузите видео, для которого будем генерировать
                 обложку, и предоставьте текстовое описание/предпочтения для генерируемой обложки
             </p>
-            <label
-                htmlFor="images"
-                className={`drop-container ${dragActive ? "drag-active" : ""}`}
-                id="dropcontainer"
-                onDragEnter={handleDrag}
-                onDragLeave={handleDrag}
-                onDragOver={handleDrag}
-                onDrop={handleDrop}
-            >
-                <span className="drop-title">Перетащите видео сюда</span>
-                или
-                <input ref={fileInput} type="file" id="video" accept="video/*" required />
-            </label>
-            <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="upload-description"
-                placeholder="Текстовое описание"
-                name="description"
-                id=""
-                cols="60"
-                rows="10"
-                required
-            ></textarea>
-            <button className="btn">Продолжить</button>
+            <div className="fieldset-container">
+                <fieldset>
+                    <legend>Информация о видео</legend>
+                    <label
+                        className={`drop-container ${dragVideoActive ? "drag-active" : ""}`}
+                        id="dropcontainer-video"
+                        onDragEnter={handleDrag}
+                        onDragLeave={handleDrag}
+                        onDragOver={handleDrag}
+                        onDrop={handleDrop}
+                    >
+                        <span className="drop-title">Перетащите видео сюда</span>
+                        или
+                        <input ref={videoInput} type="file" id="video" accept="video/*" required />
+                    </label>
+                    <textarea
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        className="upload-description"
+                        placeholder="Текстовое описание"
+                        name="description"
+                        cols="60"
+                        rows="10"
+                        required
+                    ></textarea>
+                </fieldset>
+                <fieldset>
+                    <legend>Предпочтения пользователя</legend>
+                    <select
+                        className="select"
+                        onChange={(e) => setStyle(e.target.value)}
+                        value={style}
+                    >
+                        <option value="Random Style">Случайный стиль</option>
+                        <option value="No Style">Без стиля</option>
+                        <option value="Photograph">Фотография</option>
+                        <option value="Modern Fashion">Современная мода</option>
+                        <option value="Anime Style">Аниме</option>
+                        <option value="Comic Strip">Комиксы</option>
+                        <option value="Art Nouveau">Искусство модерн</option>
+                    </select>
+                    <label className="checkbox-label">
+                        <input
+                            type="checkbox"
+                            defaultChecked={putUserFace}
+                            onChange={() => setPutUserFace((old) => !old)}
+                        />
+                        Использовать лицо автора для генерации обложки
+                    </label>
+                    <label
+                        hidden={!putUserFace}
+                        className={`drop-container ${dragImageActive ? "drag-active" : ""}`}
+                        id="dropcontainer-image"
+                        onDragEnter={handleDrag}
+                        onDragLeave={handleDrag}
+                        onDragOver={handleDrag}
+                        onDrop={handleDrop}
+                    >
+                        <span className="drop-title">Перетащите фотографию сюда</span>
+                        или
+                        <input
+                            ref={imageInput}
+                            type="file"
+                            id="image"
+                            accept="image/*"
+                            required={putUserFace}
+                        />
+                    </label>
+                </fieldset>
+            </div>
+            <button disabled={isLoading} className="btn">
+                Продолжить
+            </button>
         </form>
     );
 }
