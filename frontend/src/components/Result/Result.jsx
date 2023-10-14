@@ -1,15 +1,14 @@
-import { saveAs } from "file-saver";
-
 export default function Result({ selectedImage, returnHandler }) {
-    function downloadImage() {
-        saveAs(selectedImage, "image.jpg");
-    }
     return (
         <section className="stage-section choice">
             <img width={200} src={`data:image/png;base64,${selectedImage}`} />
-            <button onClick={downloadImage} className="btn btn-secondary">
+            <a
+                className="btn btn-secondary"
+                download="image.png"
+                href={`data:image/png;base64,${selectedImage}`}
+            >
                 Скачать
-            </button>
+            </a>
             <button onClick={returnHandler} className="btn">
                 Вернуться в начало
             </button>

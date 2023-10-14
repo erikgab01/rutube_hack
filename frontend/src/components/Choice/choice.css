@@ -1,0 +1,29 @@
+.images-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+}
+
+.image-container {
+    position: relative;
+}
+
+.image-container .select-image-btn {
+    position: absolute;
+    border-radius: 50%;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    right: 5px;
+    bottom: 5px;
+}
+
+.image-container img {
+    transition: box-shadow 0.5s;
+}
+
+.image-container img.selected {
+    box-shadow: 0px 0px 10px 10px rgba(244, 18, 64, 0.5);
+}

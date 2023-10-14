@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useRef, useState } from "react";
+import "./upload.css";
 
 export default function Upload({ continueHandler }) {
     const [dragActive, setDragActive] = useState(false);
@@ -70,6 +71,7 @@ export default function Upload({ continueHandler }) {
                 id=""
                 cols="60"
                 rows="10"
+                required
             ></textarea>
             <button className="btn">Продолжить</button>
         </form>

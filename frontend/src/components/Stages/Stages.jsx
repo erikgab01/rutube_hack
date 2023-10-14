@@ -1,5 +1,6 @@
 import { faCheck, faList, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "./stages.css";
 
 export default function Stages({ currentStage }) {
     return (
