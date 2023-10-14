@@ -1,4 +1,4 @@
-from diffusers import StableDiffusionImg2ImgPipeline
+from diffusers import StableDiffusionImg2ImgPipeline, EulerDiscreteScheduler
 from PIL import Image
 import torch
 
@@ -10,12 +10,10 @@ import numpy as np
 MODEL_ID = "stabilityai/stable-diffusion-2"
 SEED = 59
 
-PROMPTS = [
-    ''
-]
-
 NEG_PROMPTS = [
-    ''
+    "blurry, dark photo, blue, nsfw content, text",
+    "blurry, dark photo, blue, nsfw content, text",
+    "blurry, dark photo, blue, nsfw content, text"
 ]
 
 class ModelScript():
@@ -31,7 +29,8 @@ class ModelScript():
     def _init_model(self):
         device = "cuda" if torch.cuda.is_available() else "cpu"
         try:
-            self.pipe = StableDiffusionImg2ImgPipeline.from_pretrained(MODEL_ID, torch_dtype=torch.float16)
+            scheduler = EulerDiscreteScheduler.from_pretrained(MODEL_ID, subfolder="scheduler")
+            self.pipe = StableDiffusionImg2ImgPipeline.from_pretrained(MODEL_ID, scheduler=scheduler, torch_dtype=torch.float16)
         except:
             pass
 
@@ -44,14 +43,26 @@ class ModelScript():
         images_paths = [os.path.join(images_path, img) for img in images]
         images_paths_chosen = np.random.choice(images_paths, size=3, replace=False)
 
-        init_images = [Image.open(image).convert("RGB").resize((768, 768)) for image in images_paths_chosen]
+        init_images = [Image.open(image).convert("RGB").resize((800, 800)) for image in images_paths_chosen]
         return init_images
 
-    def generate(self, images_path: str = None):
+    def create_prompts(self, style: str, clear_desc: str):
+        if style == 'No Style':
+            prompt = f"High Quality Album Cover {clear_desc}"
+        elif style == 'Random Style':
+            prompt = f"High Quality Album Cover Modern Fashion {clear_desc}"
+        else:
+            prompt = f"High Quality Album Cover {style} {clear_desc}"
+        return [prompt] * 3
+
+    def generate(self, images_path: str, style: str, clear_desc: str):
+        init_images = self.get_images(images_path)
+        prompts = self.create_prompts(style, clear_desc)
+
         output = self.pipe(
-            PROMPTS,
+            prompts,
             negative_prompt=NEG_PROMPTS,
-            image=self.init_images,
+            image=init_images,
             num_inference_steps=self.steps,
             guidance_scale=self.scale,
             num_images_per_prompt=self.num_images_per_prompt,
@@ -60,6 +71,8 @@ class ModelScript():
 
         if images_path is not None:
             self._save_images(output, images_path)
+
+        return output.images
 
     def _save_images(output, images_path) -> None:
         for idx, image in enumerate(output.images):
