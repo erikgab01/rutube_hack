@@ -19,7 +19,7 @@ export default function Choice({ generatedImages, continueHandler }) {
                             <img
                                 className={selectedImageIndex === i ? "selected" : ""}
                                 width={250}
-                                src={image}
+                                src={`data:image/png;base64,${image}`}
                             ></img>
                         </Zoom>
                         <button

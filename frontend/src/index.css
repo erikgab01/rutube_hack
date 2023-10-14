@@ -8,6 +8,7 @@
     --primary-color: #f41240;
     --hover-color: #a80f2e;
     --secondary-color: #00a1e7;
+    --hover-secondary-color: #097bac;
     --primary-bg-color: #14191f;
     --secondary-bg-color: #1c232b;
     --stage-width-height: 64px;
@@ -46,9 +47,17 @@ body {
     border: none;
 }
 
+.btn-secondary {
+    background-color: var(--secondary-color);
+}
+
 .btn:hover {
     background-color: var(--hover-color);
     cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background-color: var(--hover-secondary-color);
 }
 
 .container {
@@ -94,7 +103,7 @@ body {
 
 .footer-note {
     color: #fff;
-    font-size: 1.125rem;
+    font-size: 1rem;
 }
 
 .stages {
@@ -221,6 +230,7 @@ input[type="file"]::file-selector-button:hover {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    align-items: center;
     gap: 50px;
 }
 
