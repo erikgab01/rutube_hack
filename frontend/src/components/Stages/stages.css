@@ -1,0 +1,44 @@
+.stages {
+    display: flex;
+    justify-content: center;
+    gap: var(--stages-gap);
+    margin: 50px 0;
+}
+
+.stage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    list-style: none;
+    width: var(--stage-width-height);
+    height: var(--stage-width-height);
+    background-color: white;
+    border-radius: 50%;
+    transition: all 1s;
+}
+
+.stage::before,
+.stage::after {
+    content: "";
+    position: absolute;
+    width: calc(var(--stages-gap) / 2);
+    height: 2px;
+    background-color: white;
+    transition: all 1s;
+}
+
+.stage::before {
+    right: var(--stage-width-height);
+}
+
+.stage::after {
+    left: var(--stage-width-height);
+}
+
+.stage.active,
+.stage.active::after,
+.stage.active::before {
+    background-color: var(--primary-color);
+}

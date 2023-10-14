@@ -1,11 +1,10 @@
-import Layout from "./Layout";
-import Stages from "./Stages";
-import Upload from "./Upload";
-import Choice from "./Choice";
 import { useState } from "react";
 import axios from "axios";
-//import { images } from "./utils";
-import Result from "./Result";
+import Layout from "./Layouts/Layout";
+import Stages from "./components/Stages/Stages";
+import Upload from "./components/Upload/Upload";
+import Choice from "./components/Choice/Choice";
+import Result from "./components/Result/Result";
 
 function App() {
     const [currentStage, setCurrentStage] = useState(1);

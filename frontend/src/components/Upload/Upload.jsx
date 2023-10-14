@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useRef, useState } from "react";
+import "./upload.css";
 
 export default function Upload({ continueHandler }) {
     const [dragActive, setDragActive] = useState(false);

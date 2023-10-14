@@ -1,8 +1,9 @@
 import Zoom from "react-medium-image-zoom";
-import "./zoom.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import "./zoom.css";
+import "./choice.css";
 
 export default function Choice({ generatedImages, continueHandler }) {
     const [selectedImageIndex, setSelectedImageIndex] = useState(-1);
