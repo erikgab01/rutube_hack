@@ -47,8 +47,8 @@ def upload(file: UploadFile = File(...)):
 
     return {"message": f"Successfully uploaded {file.filename}"}
 
-@app.post("/api/generate")
-async def generate(payload: GeneratePayload):
+@app.post("/api/generateVideoImages")
+async def generateVideoImage(payload: GeneratePayload):
     video_name = payload.video_name # Name of the video file
     description = payload.description # Text description, provided by the user
     style = payload.style
@@ -57,8 +57,28 @@ async def generate(payload: GeneratePayload):
 
     # Get generated content from model somewhere here
     model = Model(video_name, description, style)
-    images = model.generateImages()
+    images = model.generateVideoImages()
 
     return {
         "images": images
+    }
+
+@app.post("/api/generateChannelImage")
+async def generateChannelImage():
+    # Get generated content from model somewhere here
+    model = Model()
+    image = model.generateChannelImage()
+
+    return {
+        "image": image
+    }
+
+@app.post("/api/generateAvatarImage")
+async def generateAvatarImage():
+    # Get generated content from model somewhere here
+    model = Model()
+    image = model.generateAvatar()
+
+    return {
+        "image": image
     }

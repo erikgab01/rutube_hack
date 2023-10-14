@@ -6,13 +6,14 @@ import Upload from "./components/Upload/Upload";
 import Choice from "./components/Choice/Choice";
 import Result from "./components/Result/Result";
 import Loading from "./components/Loading/Loading";
+import Welcome from "./components/Welcome/Welcome";
 
 function App() {
-    const [currentStage, setCurrentStage] = useState(1);
+    const [currentStage, setCurrentStage] = useState(0);
     const [generatedImages, setGeneratedImages] = useState([]);
     const [selectedImageIndex, setSelectedImageIndex] = useState(-1);
 
-    const startingStage = 1;
+    const startingStage = 0;
 
     async function handleGenerateRequest(video_name, description, style, image_name) {
         setCurrentStage((old) => old + 1);
@@ -21,7 +22,7 @@ function App() {
         }
         setTimeout(async () => {
             try {
-                const response = await axios.post("api/generate", {
+                const response = await axios.post("api/generateVideoImages", {
                     video_name,
                     description,
                     style,
@@ -45,10 +46,59 @@ function App() {
         setCurrentStage(startingStage);
     }
 
+    function handleSelectOption(option) {
+        switch (option) {
+            case "video":
+                setCurrentStage(1);
+                break;
+
+            case "channel":
+                handleChannelGeneration();
+                break;
+
+            case "avatar":
+                handleAvatarGeneration();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    function handleChannelGeneration() {
+        setCurrentStage(2);
+        setTimeout(async () => {
+            try {
+                const response = await axios.post("api/generateChannelImage");
+                setGeneratedImages([response.data.image]);
+                setSelectedImageIndex(0);
+                setCurrentStage(4);
+            } catch (e) {
+                console.log(e);
+                setCurrentStage(0);
+            }
+        }, 10000);
+    }
+
+    function handleAvatarGeneration() {
+        setCurrentStage(2);
+        setTimeout(async () => {
+            try {
+                const response = await axios.post("api/generateAvatarImage");
+                setGeneratedImages([response.data.image]);
+                setSelectedImageIndex(0);
+                setCurrentStage(4);
+            } catch (e) {
+                console.log(e);
+                setCurrentStage(0);
+            }
+        }, 10000);
+    }
+
     let stageElement = null;
     switch (currentStage) {
         case 0:
-            stageElement = null;
+            stageElement = <Welcome selectHandler={handleSelectOption} />;
             break;
         case 1:
             stageElement = <Upload continueHandler={handleGenerateRequest} />;

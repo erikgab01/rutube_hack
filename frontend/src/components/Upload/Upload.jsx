@@ -56,11 +56,13 @@ export default function Upload({ continueHandler }) {
             const response1 = await axios.post("api/uploadVideo", formDataVideo, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
+            console.log(response1);
             if (putUserFace) {
                 formDataImage.append("file", imageInput.current.files[0]);
                 const response2 = await axios.post("api/uploadImage", formDataImage, {
                     headers: { "Content-Type": "multipart/form-data" },
                 });
+                console.log(response2);
             }
             setIsLoading(false);
             continueHandler(
