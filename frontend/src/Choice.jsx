@@ -31,7 +31,11 @@ export default function Choice({ generatedImages, continueHandler }) {
                     </div>
                 ))}
             </div>
-            <button onClick={() => continueHandler(selectedImageIndex)} className="btn">
+            <button
+                disabled={selectedImageIndex === -1}
+                onClick={() => continueHandler(selectedImageIndex)}
+                className="btn"
+            >
                 Продолжить
             </button>
         </section>

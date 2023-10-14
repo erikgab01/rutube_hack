@@ -70,6 +70,7 @@ export default function Upload({ continueHandler }) {
                 id=""
                 cols="60"
                 rows="10"
+                required
             ></textarea>
             <button className="btn">Продолжить</button>
         </form>
