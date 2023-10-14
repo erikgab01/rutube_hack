@@ -68,3 +68,5 @@ class Model():
             os.path.join("data/people", file_name),
             "generated_images"
         )
+
+        return imgs_with_people
