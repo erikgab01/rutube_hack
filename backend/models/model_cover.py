@@ -16,7 +16,7 @@ NEG_PROMPTS = [
     "blurry, dark photo, blue, nsfw content, text"
 ]
 
-class ModelScript():
+class ModelCover():
     def __init__(self, steps: int = 1000, scale: int = 9, num_images_per_prompt: int = 1):
         self.steps = steps
         self.scale = scale
@@ -55,7 +55,7 @@ class ModelScript():
             prompt = f"High Quality Album Cover {style} {clear_desc}"
         return [prompt] * 3
 
-    def generate(self, images_path: str, style: str, clear_desc: str):
+    def generate(self, images_path: str, clear_desc: str, style: str):
         init_images = self.get_images(images_path)
         prompts = self.create_prompts(style, clear_desc)
 
@@ -74,9 +74,9 @@ class ModelScript():
 
         return output.images
 
-    def _save_images(output, images_path) -> None:
+    def _save_images(output, images_path: str) -> None:
         for idx, image in enumerate(output.images):
-            image_name = f'{idx}.png'
+            image_name = f'generated_images/{idx}.png'
             image_path = os.path.join(images_path, image_name)
             image.save(image_path)
 

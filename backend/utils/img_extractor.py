@@ -1,5 +1,8 @@
 import cv2
 import os
+from PIL import Image
+import numpy as np
+from matplotlib import cm
 
 
 def extract_images(video_path: str, images_path: str) -> None:
@@ -24,6 +27,26 @@ def extract_images(video_path: str, images_path: str) -> None:
 
     print("Video is converted")
     print()
+
+
+def insert_person(face_path: str = "data/bald_brazzers.jpg", gen_images_path: str = ""):
+    face_arr = cv2.imread(face_path)
+    face_arr = cv2.cvtColor(face_arr, cv2.COLOR_BGR2RGB)
+    face_arr = cv2.resize(face_arr, (400, 400))
+
+    covers_with_person = []
+    for img_path in gen_images_path:
+        img = cv2.imread(img_path)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = cv2.resize(img, (800, 800))
+
+        for row in range(400):
+            for col in range(400):
+                for channel in range(3):
+                    if face_arr[row][col][channel] <= 250:
+                        img[400 + row, 200 + col, channel] = face_arr[row][col][channel]
+        covers_with_person.append(Image.fromarray(np.uint8(cm.gist_earth(img)*255)))
+    return covers_with_person
 
 
 if __name__ == '__main__':

@@ -9,6 +9,7 @@ class GeneratePayload(BaseModel):
     style: str = ""
     image_name: str = ""
 
+MODEL = Model()
 
 app = FastAPI()
 
@@ -25,7 +26,7 @@ app.add_middleware(
 def upload(file: UploadFile = File(...)):
     try:
         contents = file.file.read()
-        with open(f"./videos/{file.filename}", 'wb') as f:
+        with open(f"./data/videos/{file.filename}", 'wb') as f:
             f.write(contents)
     except Exception:
         return {"message": "There was an error uploading the file"}
@@ -38,7 +39,7 @@ def upload(file: UploadFile = File(...)):
 def upload(file: UploadFile = File(...)):
     try:
         contents = file.file.read()
-        with open(f"./images/{file.filename}", 'wb') as f:
+        with open(f"./data/people/{file.filename}", 'wb') as f:
             f.write(contents)
     except Exception:
         return {"message": "There was an error uploading the file"}
@@ -56,8 +57,7 @@ async def generateVideoImage(payload: GeneratePayload):
     print(video_name, description, style, image_name)
 
     # Get generated content from model somewhere here
-    model = Model(video_name, description, style)
-    images = model.generateVideoImages()
+    images = MODEL.generateVideoImages(video_name, description, style, image_name)
 
     return {
         "images": images
@@ -66,8 +66,7 @@ async def generateVideoImage(payload: GeneratePayload):
 @app.post("/api/generateChannelImage")
 async def generateChannelImage():
     # Get generated content from model somewhere here
-    model = Model()
-    image = model.generateChannelImage()
+    image = MODEL.generateChannelImage()
 
     return {
         "image": image
@@ -76,8 +75,7 @@ async def generateChannelImage():
 @app.post("/api/generateAvatarImage")
 async def generateAvatarImage():
     # Get generated content from model somewhere here
-    model = Model()
-    image = model.generateAvatar()
+    image = MODEL.generateAvatar()
 
     return {
         "image": image
