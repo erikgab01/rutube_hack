@@ -17,15 +17,15 @@ ipython==8.13.0
 ipykernel==6.25.2
 ipywidgets==8.1.1
 
-torch==2.1.0
-torchvision==0.16.0
-
 nltk
 pymystem3
 translate
 
 huggingface_hub
 
-# torch==2.1.0+cu121
-# torchvision==0.16.0+cu121
-# -f https://download.pytorch.org/whl/torch_stable.html
+# torch==2.1.0
+# torchvision==0.16.0
+
+torch==2.1.0+cu121
+torchvision==0.16.0+cu121
+-f https://download.pytorch.org/whl/torch_stable.html
