@@ -1,7 +1,10 @@
-export default function Result({ selectedImage, returnHandler }) {
+export default function Result({ selectedImage, returnHandler, isSmallImage }) {
     return (
         <section className="stage-section choice">
-            <img width={200} src={`data:image/png;base64,${selectedImage}`} />
+            <img
+                className={`responsive ${isSmallImage ? "small-img" : ""}`}
+                src={`data:image/png;base64,${selectedImage}`}
+            />
             <a
                 className="btn btn-secondary"
                 download="image.png"
@@ -16,4 +19,4 @@ export default function Result({ selectedImage, returnHandler }) {
     );
 }
 
-//<img width={200} key={i} src={`data:image/png;base64,${selectedImage}`}></img>
+//<img width={200} src={`data:image/png;base64,${selectedImage}`} />
