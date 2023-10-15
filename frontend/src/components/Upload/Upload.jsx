@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useRef, useState } from "react";
 import "./upload.css";
+import Loader from "../Loading/Loader";
 
 export default function Upload({ continueHandler }) {
     const [putUserFace, setPutUserFace] = useState(false);
@@ -151,8 +152,9 @@ export default function Upload({ continueHandler }) {
                     </label>
                 </fieldset>
             </div>
-            <button disabled={isLoading} className="btn">
+            <button disabled={isLoading} className="btn flex-btn">
                 Продолжить
+                {isLoading && <Loader />}
             </button>
         </form>
     );

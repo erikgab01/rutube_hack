@@ -60,6 +60,13 @@ body {
     border: none;
 }
 
+.flex-btn {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
 .btn:disabled {
     background-color: #ccc;
 }
