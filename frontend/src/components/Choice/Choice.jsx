@@ -18,7 +18,9 @@ export default function Choice({ generatedImages, continueHandler }) {
                     <div className="image-container" key={i}>
                         <Zoom>
                             <img
-                                className={selectedImageIndex === i ? "selected" : ""}
+                                className={`responsive ${
+                                    selectedImageIndex === i ? "selected" : ""
+                                }`}
                                 width={250}
                                 src={`data:image/png;base64,${image}`}
                             ></img>

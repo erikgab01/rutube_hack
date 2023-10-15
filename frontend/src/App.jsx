@@ -12,6 +12,7 @@ function App() {
     const [currentStage, setCurrentStage] = useState(0);
     const [generatedImages, setGeneratedImages] = useState([]);
     const [selectedImageIndex, setSelectedImageIndex] = useState(-1);
+    const [isSmallImage, setIsSmallImage] = useState(true);
 
     const startingStage = 0;
 
@@ -20,21 +21,19 @@ function App() {
         if (!image_name) {
             image_name = "";
         }
-        setTimeout(async () => {
-            try {
-                const response = await axios.post("api/generateVideoImages", {
-                    video_name,
-                    description,
-                    style,
-                    image_name,
-                });
-                setGeneratedImages(response.data.images);
-                setCurrentStage((old) => old + 1);
-            } catch (e) {
-                console.log(e);
-                setCurrentStage((old) => old - 1);
-            }
-        }, 10000);
+        try {
+            const response = await axios.post("api/generateVideoImages", {
+                video_name,
+                description,
+                style,
+                image_name,
+            });
+            setGeneratedImages(response.data.images);
+            setCurrentStage((old) => old + 1);
+        } catch (e) {
+            console.log(e);
+            setCurrentStage((old) => old - 1);
+        }
     }
 
     function handleImageChoice(chosenImageIndex) {
@@ -65,34 +64,31 @@ function App() {
         }
     }
 
-    function handleChannelGeneration() {
+    async function handleChannelGeneration() {
         setCurrentStage(2);
-        setTimeout(async () => {
-            try {
-                const response = await axios.post("api/generateChannelImage");
-                setGeneratedImages([response.data.image]);
-                setSelectedImageIndex(0);
-                setCurrentStage(4);
-            } catch (e) {
-                console.log(e);
-                setCurrentStage(0);
-            }
-        }, 10000);
+        try {
+            const response = await axios.post("api/generateChannelImage");
+            setGeneratedImages([response.data.image]);
+            setSelectedImageIndex(0);
+            setIsSmallImage(false);
+            setCurrentStage(4);
+        } catch (e) {
+            console.log(e);
+            setCurrentStage(0);
+        }
     }
 
-    function handleAvatarGeneration() {
+    async function handleAvatarGeneration() {
         setCurrentStage(2);
-        setTimeout(async () => {
-            try {
-                const response = await axios.post("api/generateAvatarImage");
-                setGeneratedImages([response.data.image]);
-                setSelectedImageIndex(0);
-                setCurrentStage(4);
-            } catch (e) {
-                console.log(e);
-                setCurrentStage(0);
-            }
-        }, 10000);
+        try {
+            const response = await axios.post("api/generateAvatarImage");
+            setGeneratedImages([response.data.image]);
+            setSelectedImageIndex(0);
+            setCurrentStage(4);
+        } catch (e) {
+            console.log(e);
+            setCurrentStage(0);
+        }
     }
 
     let stageElement = null;
@@ -116,6 +112,7 @@ function App() {
                 <Result
                     selectedImage={generatedImages[selectedImageIndex]}
                     returnHandler={handleReturn}
+                    isSmallImage={isSmallImage}
                 />
             );
             break;
