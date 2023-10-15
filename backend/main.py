@@ -3,6 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from model import Model
 
+from huggingface_hub import login
+
+login(token="")
+
 class GeneratePayload(BaseModel):
     video_name: str = ""
     description: str = ""
