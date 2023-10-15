@@ -78,7 +78,7 @@ class ModelCover():
     @staticmethod
     def _save_images(output, images_path: str) -> None:
         for idx, image in enumerate(output.images):
-            image_name = f'generated_images/{idx}.png'
+            image_name = f'{idx}.png'
             image_path = os.path.join(images_path, image_name)
             image.save(image_path)
 
