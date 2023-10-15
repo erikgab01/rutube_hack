@@ -28,6 +28,7 @@ class ModelCover():
 
     def _init_model(self):
         device = "cuda" if torch.cuda.is_available() else "cpu"
+        # device = "cpu"
         try:
             scheduler = EulerDiscreteScheduler.from_pretrained(MODEL_ID, subfolder="scheduler")
             self.pipe = StableDiffusionImg2ImgPipeline.from_pretrained(MODEL_ID, scheduler=scheduler, torch_dtype=torch.float16)
@@ -74,15 +75,16 @@ class ModelCover():
 
         return output.images
 
+    @staticmethod
     def _save_images(output, images_path: str) -> None:
         for idx, image in enumerate(output.images):
-            image_name = f'generated_images/{idx}.png'
+            image_name = f'{idx}.png'
             image_path = os.path.join(images_path, image_name)
             image.save(image_path)
 
 
 if __name__ == '__main':
-    model = ModelScript()
+    model = ModelCover()
 
     IMAGES_PATH = "extracted_images/0/"
 

@@ -5,7 +5,7 @@ from model import Model
 
 from huggingface_hub import login
 
-login(token="")
+login(token="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")
 
 class GeneratePayload(BaseModel):
     video_name: str = ""
@@ -28,6 +28,7 @@ app.add_middleware(
 # Upload file to ./videos directory
 @app.post("/api/uploadVideo")
 def upload(file: UploadFile = File(...)):
+    print('Uploading video')
     try:
         contents = file.file.read()
         with open(f"./data/videos/{file.filename}", 'wb') as f:

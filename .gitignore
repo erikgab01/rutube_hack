@@ -5,6 +5,9 @@ backend/videos/*.mp4
 backend/generated_images/*.jpg
 backend/generated_images/*.png
 
+backend/data/extracted_images/
+backend/data/videos/
+
 # Logs
 logs
 *.log

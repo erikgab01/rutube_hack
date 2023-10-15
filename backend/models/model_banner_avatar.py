@@ -3,6 +3,7 @@ import torch
 
 
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
+# DEVICE = 'cpu'
 STEPS = 100
 SCALE = 9
 SEED = 59
@@ -38,9 +39,7 @@ class BannerAvatarModel:
 
         out_image = output.images[0]
 
-        if self.mode == "banner":
+        if mode == "banner":
             out_image = out_image.resize((2204, 876))
 
         return out_image
-
-
