@@ -1,8 +1,59 @@
-# React + Vite
+# ИИ-генерация обложек для видео и каналов
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Проект подготовлен в рамках хакатона Цифровой прорыв 2023
 
-Currently, two official plugins are available:
+## Запуск приложения
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Есть два способа запуска приложения: локально и через докер
+
+-   Склонировать репозиторий:
+
+```
+git clone https://github.com/erikgab01/rutube_hack.git
+```
+
+Локально:
+
+-   Перейти в директорию frontend
+
+```
+cd frontend
+```
+
+-   Установить зависимости
+
+```
+npm install
+```
+
+-   Запустить клиентское приложение, приложение запустится на http://localhost:5173
+
+```
+npm run dev
+```
+
+-   Перейти в директорию backend
+
+```
+cd backend
+```
+
+-   Установить зависимости
+
+```
+pip install -r requirements.txt
+```
+
+-   Запустить серверное приложение, сервер запустится на http://localhost:8000
+
+```
+uvicorn main:app
+```
+
+Через докер:
+
+-   В корне проекта запустить docker-compose
+
+```
+docker-compose up
+```
