@@ -13,7 +13,6 @@ class GeneratePayload(BaseModel):
     image_name: str = ""
 
 MODEL = Model()
-
 app = FastAPI()
 
 app.add_middleware(
