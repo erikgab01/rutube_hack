@@ -1,11 +1,10 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from model import Model
-
 from huggingface_hub import login
 
-login(token="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")
+from model import Model
+
 
 class GeneratePayload(BaseModel):
     video_name: str = ""
@@ -55,8 +54,8 @@ def upload(file: UploadFile = File(...)):
 
 @app.post("/api/generateVideoImages")
 async def generateVideoImage(payload: GeneratePayload):
-    video_name = payload.video_name # Name of the video file
-    description = payload.description # Text description, provided by the user
+    video_name = payload.video_name     # Name of the video file
+    description = payload.description   # Text description, provided by the user
     style = payload.style
     image_name = payload.image_name
     print(video_name, description, style, image_name)

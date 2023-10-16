@@ -67,7 +67,7 @@ class TextPreparator:
             if i in count_dict:
                 count_dict[i] += 1
             else:
-                count_dict[i] = 1 
+                count_dict[i] = 1
 
         sorted_words = sorted(count_dict.items(), key=lambda item: item[1], reverse=True)
 
@@ -77,7 +77,7 @@ class TextPreparator:
         top = ' '.join(top)
 
         eng_words = self.translator.translate(top)
-        return eng_words    
+        return eng_words
 
 
 if __name__ == "__main__":
