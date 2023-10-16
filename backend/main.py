@@ -26,6 +26,9 @@ app.add_middleware(
 # Upload file to ./videos directory
 @app.post("/api/uploadVideo")
 def upload(file: UploadFile = File(...)):
+    """
+        Function for uploading the video
+    """
     print('Uploading video')
     try:
         contents = file.file.read()
@@ -39,7 +42,10 @@ def upload(file: UploadFile = File(...)):
     return {"message": f"Successfully uploaded {file.filename}"}
 
 @app.post("/api/uploadImage")
-def upload(file: UploadFile = File(...)):
+def upload_img(file: UploadFile = File(...)):
+    """
+        Function for uploading the image to generate the face
+    """
     try:
         contents = file.file.read()
         with open(f"./data/people/{file.filename}", 'wb') as f:
